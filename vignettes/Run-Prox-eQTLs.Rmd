@@ -1,0 +1,69 @@
+---
+title: "2. Identify prox-eQTLs from scratch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{2. Identify prox-eQTLs from scratch}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+# 1. Prepare input files
+### Since we are using MatrixEQTL to estimate the association between genotype and gene epxresion level, the input file requires 5 types. The format is also consistent of the MatrixEQTL package. Here is using demo data to show what the input file format should look like.
+## 1.1 First file: SNP genotype file
+
+```{r, warning=FALSE}
+library(ProxSeek)
+library(data.table)
+SNP_file_name = system.file("data", "chr19_geno2.csv", package = "ProxSeek")
+snp_file<-fread(SNP_file_name)
+snp_file[1:5,1:5]
+```
+
+## 1.2 Second file: the genome location file, based on hg19
+
+```{r}
+snps_location_file_name = system.file("data", "chr19_geno_loc2.csv", package = "ProxSeek")
+snp_location_file<-fread(snps_location_file_name)
+head(snp_location_file)
+```
+
+## 1.3 Third file: gene expression from samples
+
+```{r}
+expression_file_name = system.file("data", "GE2.csv", package = "ProxSeek")
+expression_file<-fread(expression_file_name)
+expression_file[1:5,1:5]
+```
+
+## 1.4 Fourth file: gene genomic location file, hg19 as reference
+
+```{r}
+gene_location_file_name = system.file("data", "geneloc_TSS2.csv", package = "ProxSeek")
+gene_location<-fread(gene_location_file_name)
+head(gene_location)
+```
+
+## 1.5 Last file: the covariants file
+
+```{r}
+covariates_file_name = system.file("data", "Covariates.csv", package = "ProxSeek")
+covariates_file<-fread(covariates_file_name)
+covariates_file[1:5,1:5]
+```
+
+
+# 2. Now we can run ProxSeek to identify prox-eQTLs 
+
+```{r, warning=FALSE}
+demo.P.PIR<-system.file("data", package = "ProxSeek")
+demo.P.PIR
+
+output.file<-system.file("data", package = "ProxSeek")
+output.file<-paste0(output.file,"/output.csv")
+
+result <- ProxSeek_runProxeQTL(SNP_file_name = SNP_file_name,expression_file_name = expression_file_name,snps_location_file_name = snps_location_file_name,gene_location_file_name = gene_location_file_name,covariates_file_name = covariates_file_name, cell.type = "Mon", chr = 19,
+                               output.file = output.file, n.cluster = 10, P_PIR_folder = demo.P.PIR)
+
+head(result)
+```
+

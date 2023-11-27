@@ -1,0 +1,45 @@
+---
+title: "1. Prioritize cis-eQTL using ProxSeek"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{1. Prioritize cis-eQTL using ProxSeek}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+#### 1. Load ProxSeek R package
+library(ProxSeek)
+```
+
+
+```{r}
+#### 2. Load demo cis-eQTL dataset
+demo.ciseqtl.file<-system.file("data", "ciseqtl.csv", package = "ProxSeek")
+demo.ciseqtl.file
+
+library(data.table)
+cis.eqtl.df<-fread(demo.ciseqtl.file)
+head(cis.eqtl.df)
+```
+```{r}
+#### 3. Download the P_PIR_folder to your local computer and assign the P_PIR_folder file path
+demo.P.PIR<-system.file("data", package = "ProxSeek")
+demo.P.PIR
+list.files(demo.P.PIR) # you should see a list of P_PIR_cell.csv files
+```
+
+
+
+```{r, results='hide', message=FALSE}
+#### 3. Run ProxSeek to prioritize cis-eQTLs
+result <- ProxSeek_selectProxCis(ciseqtl.file = demo.ciseqtl.file, P_PIR_folder = demo.P.PIR, cell.type = "Mon", n.cluster = 4)
+
+head(result)
+```
+
+```{r}
+### Check how many were located within P-PIR regions
+table(result$Within)
+```
+

@@ -1,0 +1,8 @@
+pandoc: 2.19.2
+pkgdown: 2.0.5
+pkgdown_sha: ~
+articles:
+  Prioritize-cis-eqtl: Prioritize-cis-eqtl.html
+  Run-Prox-eQTLs: Run-Prox-eQTLs.html
+last_built: 2023-11-22T23:07Z
+
